@@ -98,8 +98,24 @@ sls login
 // create an account or login.
 ```
 
-2. Clone project
+<!-- TODO: verify this. -->
+2. Clone project and install project
+
+```
+sls install -u https://github.com/trozler/pifinder.git
+```
+
+3. Deploy project and run.
+
+```
+sls deploy -v
+
+// end point will appear e.g.
 
 ```
 
+4. Cleanup resources
+
+```
+sls remove
 ```
