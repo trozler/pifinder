@@ -2,27 +2,61 @@ const { Lambda } = require("aws-sdk");
 
 /**
  * @description This function will call 3 lamda functions and wait for the results.
+ * Each will compute arctan(x).
+ * Worker 1: arctan(18)
+ * Worker 2: arctan(57)
+ * Worker 3: arctan(239)
  */
-const piFinder = async (event) => {
-  const { x, nCycles, nDigits } = JSON.parse(event.body);
-
-  console.log(`before calling test2(${process.env.Lambda2})`);
-  try {
-    let res = await new Lambda()
+const piFinder = async (nCycles, nDigits) => {
+  const promises = [
+    new Lambda()
       .invoke({
         FunctionName: process.env.workerLamda,
         Payload: JSON.stringify({
-          piConfig: "",
+          piConfig: {
+            nCycles: nCycles,
+            nDigits: nDigits,
+            x: 18,
+          },
         }),
         InvocationType: "Event",
       })
-      .promise();
+      .promise(),
+    new Lambda()
+      .invoke({
+        FunctionName: process.env.workerLamda,
+        Payload: JSON.stringify({
+          piConfig: {
+            nCycles: nCycles,
+            nDigits: nDigits,
+            x: 57,
+          },
+        }),
+        InvocationType: "Event",
+      })
+      .promise(),
+    new Lambda()
+      .invoke({
+        FunctionName: process.env.workerLamda,
+        Payload: JSON.stringify({
+          piConfig: {
+            nCycles: nCycles,
+            nDigits: nDigits,
+            x: 239,
+          },
+        }),
+        InvocationType: "Event",
+      })
+      .promise(),
+  ];
 
-    console.log(`invoke test2 response: ${JSON.stringify(res, null, 2)}`);
-  } catch (err) {
-    console.log(`invoke ERROR: ${err}`);
+  let res;
+  try {
+    res = await Promise.all(promises);
+  } catch (e) {
+    console.log(`invoke ERROR: ${e}`);
+    throw e;
   }
-  console.log(`after calling test2`);
 };
 
 module.exports = piFinder;

@@ -16,6 +16,8 @@ app: pidistributed
 org: trozler
 
 frameworkVersion: '2'
+plugins:
+  - serverless-offline
 
 provider:
   name: aws
@@ -29,17 +31,6 @@ provider:
       Action:
         - "lambda:InvokeFunction"
       Resource: "*"
-
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
 
 # you can define service wide environment variables here
 #  environment:
@@ -55,31 +46,32 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
+  calculate:
+    handler: ./src/app.handler
+    events:
+      - httpApi:
+          path: /
+          method: ANY
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+    environment:
+      workerLamda:
+        Ref: WorkerLambdaFunction
+
+  worker:
+    handler: ./src/app.handler
+    events:
+      - httpApi:
+          path: /worker
+          method: post
+
   hellotest:
-    handler: functions.helloTest
+    handler: ./src/app.handler
     events:
       - httpApi:
           path: /hellotest
           method: get
-
-  calculate:
-    handler: functions.calculate
-    events:
-      - httpApi:
-          path: /calculate
-          method: post
-  
-  worker:
-    handler: functions.worker
-    events:
-      - httpApi:
-          path: /calculate
-          method: post
-    
-    
-    environment:
-      workerLamda:
-        Ref: Test2LambdaFunction
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
