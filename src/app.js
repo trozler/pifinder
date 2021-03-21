@@ -10,22 +10,22 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.post("/calculate", async (req, res) => {
-  if (!req.body.hasOwnProperty("nDigits")) {
-    res.status(400).send("POST doesn't include a key nDigits");
+  if (!req.body["nDigits"]) {
+    return res.status(400).send("POST doesn't include a key nDigits.");
   }
-  if (!req.body.hasOwnProperty("nCycles")) {
-    res.status(400).send("POST doesn't include a key nCycles.");
+  if (!req.body["nCycles"]) {
+    return res.status(400).send("POST doesn't include a key nCycles.");
   }
 
   const nDigits = parseInt(req.body["nDigits"]);
   const nCycles = parseInt(req.body["nCycles"]);
 
   if (isNaN(nDigits) || nDigits < 1 || nDigits > 100000) {
-    res.status(400).send("nDigits value is bad.\nPlease set value to an integer in the range [1, 100,000]");
+    return res.status(400).send("nDigits value is bad.\nPlease set value to an integer in the range [1, 100,000]");
   }
 
   if (isNaN(nCycles) || nCycles < 1 || nCycles > 100000) {
-    res.status(400).send("nCycles value is bad.\nPlease set value to an integer in the range [1, 100,000]");
+    return res.status(400).send("nCycles value is bad.\nPlease set value to an integer in the range [1, 100,000]");
   }
 
   let pi;
@@ -41,7 +41,7 @@ app.post("/calculate", async (req, res) => {
 // verify that a new instance is created when spawn multiple.
 app.post("/worker", (req, res) => {
   console.log(req.body);
-  // const { x, nCycles, nDigits } = event.piConfig;
+  // const { x, nCycles, nDigits } = req.body.piConfig;
   // return {
   //   statusCode: 200,
   //   body: JSON.stringify({
@@ -53,15 +53,20 @@ app.post("/worker", (req, res) => {
 // helloTest lamda function is routed here.
 app.get("/helloTest", async (req, res) => {
   console.log(req.body);
-
-  // return {
-  //   statusCode: 200,
-  //   body: JSON.stringify({
-  //     message: "Go Serverless v1.0! Your function executed successfully!",
-  //     input: event,
-  //   }),
-  // };
+  res.send("helloTest works");
 });
 
 // @ts-ignore
 module.exports.handler = serverless(app);
+
+/*
+  https://www.serverless.com/blog/serverless-express-rest-api#path-specific-routing
+
+  Each serverless function will have the same code, express app etc.
+  But depedning on the route a different serverless function will be invoked. 
+  This allows the serverless functions to run in a distributed manner.
+
+  Why use path specifc routing?
+  Creates a simple interface for our application.
+  Since application is very small bloating is of little concern.
+*/

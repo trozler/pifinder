@@ -59,6 +59,4 @@ const piGauss = function (nCycles, nDigits) {
   console.log("pi:", piDisplay);
 };
 
-(function () {
-  piGauss(100, 50);
-})();
+piGauss(100, 50);

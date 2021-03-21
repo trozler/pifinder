@@ -1,21 +1,8 @@
-# Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
-
 service: pifinder
 app: pidistributed
 org: trozler
 
-frameworkVersion: '2'
+frameworkVersion: "2"
 plugins:
   - serverless-offline
 
@@ -24,14 +11,15 @@ provider:
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
   stage: dev
-  region: eu-central
-  
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "lambda:InvokeFunction"
-      Resource: "*"
+  region: eu-central-1
 
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "lambda:InvokeFunction"
+          Resource: "*"
 # you can define service wide environment variables here
 #  environment:
 #    variable1: value1
@@ -50,11 +38,8 @@ functions:
     handler: ./src/app.handler
     events:
       - httpApi:
-          path: /
-          method: ANY
-      - httpApi:
-          path: /{proxy+}
-          method: ANY
+          path: /calculate
+          method: post
     environment:
       workerLamda:
         Ref: WorkerLambdaFunction
@@ -72,7 +57,6 @@ functions:
       - httpApi:
           path: /hellotest
           method: get
-
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details

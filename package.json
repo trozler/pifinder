@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/trozler/pifinder#readme",
   "dependencies": {
-    "aws-sdk": "^2.863.0",
+    "aws-sdk": "^2.868.0",
     "express": "^4.17.1",
     "serverless-http": "^2.7.0"
   },

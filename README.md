@@ -36,7 +36,7 @@ Each worker will use `x` cycles to calculate `n` digits each.
 The question was somewhat vague as to what `x` cycles meant?
 
 - `x` total cycles among all workers?
-- `x` total cycles on each worker.
+- `x` total cycles on each worker?
 
 I assume it means the latter.
 
@@ -48,8 +48,8 @@ pi = 4 * (12 * worker1Res + 8 * worker2Res - 5 * worker3Res)
 
 ### [Fixed point arithmatic](https://en.wikipedia.org/wiki/Fixed-point_arithmetic)
 
-We use fixed point arithmatic to avoid dealing with any floating point numbers, until right at the end of the computation.
-Fixed point arithmatic means we "scale" the numbers we are working with by can treat floating point numbers as integers, without loss of precision.
+We use fixed point arithmatic to avoid dealing with floating point numbers, until right at the end of the computation.
+Fixed point arithmatic means we "scale" the numbers we are working with by some constant in base 10 (10^x). We can then treat floating point numbers as integers, without loss of precision.
 
 We do this because operations (especially division) between integers are much faster than between floats.
 
@@ -57,6 +57,7 @@ e.g.
 
 ```
 nDigits = 20
+// sclae by 10^20.
 pi at end of comp =  314159265358979323548
 // Shift the "." 20 places to the left.
 pi to be returned = 3.14159265358979323548
@@ -75,21 +76,18 @@ POST /calculate
 
 - `nCycles` needs to be in the range `[1, 100,000]`.
 
-  - 1M cycles per worker should be more than enough for the series to converge.
-  - e.g When `nCycles = 1`, the series succesfully find the first 4 terms of pi.
+  - The series converges quickly, e.g. `nCycles = 1`, the series succesfully find the first 4 terms of pi.
 
 - `nDigits` needs to be in the range `[1, 100,000]`.
-  - NOTE: Using 3 worker nodes, it takes around 5 minutes to calculate the first 1M digits of pi. But I don't wan't to pay for that.
+  - Using 3 worker nodes, it takes around 5 minutes to calculate the first 1M digits of pi. But computation is not free!
 
 ### Architecture
 
-
-
 #### How to run
 
-The project uses serverless an open source framework that creates a simple way to deploy and manage serverless functions on the cloud. 
+The project uses [serverless](https://www.serverless.com/) an open source framework that creates a simple way to deploy and manage serverless functions on the cloud.
 
-1. Install serverless. 
+1. Install serverless.
 
 ```
 npm install -g serverless
@@ -99,10 +97,12 @@ sls login
 ```
 
 <!-- TODO: verify this. -->
+
 2. Clone project and install project
 
 ```
 sls install -u https://github.com/trozler/pifinder.git
+npm i
 ```
 
 3. Deploy project and run.
