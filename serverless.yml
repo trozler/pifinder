@@ -4,7 +4,6 @@ org: trozler
 
 frameworkVersion: "2"
 plugins:
-  - serverless-offline
 
 provider:
   name: aws
@@ -45,17 +44,17 @@ functions:
         Ref: WorkerLambdaFunction
 
   worker:
-    handler: ./src/app.handler
+    handler: ./src/worker.handler
     events:
       - httpApi:
           path: /worker
           method: post
 
   hellotest:
-    handler: ./src/app.handler
+    handler: ./src/hello.handler
     events:
       - httpApi:
-          path: /hellotest
+          path: /hello
           method: get
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

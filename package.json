@@ -1,7 +1,7 @@
 {
   "name": "pifinder",
   "version": "1.0.0",
-  "description": "### Algorithm",
+  "description": "piFinder",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,9 +20,8 @@
   "dependencies": {
     "aws-sdk": "^2.868.0",
     "express": "^4.17.1",
+    "serverless": "^2.30.3",
     "serverless-http": "^2.7.0"
   },
-  "devDependencies": {
-    "serverless-offline": "^6.8.0"
-  }
+  "devDependencies": {}
 }

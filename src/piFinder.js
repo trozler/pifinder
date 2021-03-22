@@ -1,20 +1,18 @@
 const { Lambda } = require("aws-sdk");
 
-const WorkerName =
-  process.env.NODE_ENV != "production"
-    ? "http://localhost:3002/dev/eu-central-1/pifinder-dev-worker"
-    : process.env.WorkerLamda;
-
 /**
+ *
  * @description This function will call 3 lamda functions and wait for the results.
  * Each will compute arctan(x).
  * Worker 1: arctan(18)
  * Worker 2: arctan(57)
  * Worker 3: arctan(239)
+ * @param {Number} nCycles
+ * @param {Number} nDigits
  */
 const piFinder = async (nCycles, nDigits) => {
   console.log(":::::Start of pi finder.");
-  console.log(":::::Name of worker:", process.env.WorkerLamda);
+  console.log(":::::Name of worker:", process.env.workerLamda);
 
   const promises = [];
   for (const x of [18, 57, 239]) {
@@ -22,15 +20,17 @@ const piFinder = async (nCycles, nDigits) => {
     promises.push(
       new Lambda()
         .invoke({
-          FunctionName: WorkerName,
+          FunctionName: process.env.workerLamda,
           Payload: JSON.stringify({
+            // needs to be JSON stringified.
+            // event.piConfig will access payload in Lambda.
             piConfig: {
               nCycles: nCycles,
               nDigits: nDigits,
               x: x,
             },
           }),
-          InvocationType: "Event",
+          InvocationType: "RequestResponse",
         })
         .promise()
     );
@@ -46,19 +46,56 @@ const piFinder = async (nCycles, nDigits) => {
 
   console.log(":::::promise res", res);
 
-  const parts = [];
-  for (const p of promises) {
+  let part0;
+  let part1;
+  let part2;
+
+  for (const p of res) {
+    console.log(":::::typeof p.Payload:", typeof p.Payload);
+    const body = JSON.parse(p.Payload.toString());
+    console.log(":::::body worker function:", body);
+
+    if (body === null) {
+      console.error("body is null. body:", body);
+      throw new Error("body is null: " + body);
+    } else if (p.FunctionError) {
+      console.error("Function error with lamda. Payload:", body);
+      throw new Error(body.toString());
+    } else if (Math.floor(p.StatusCode / 100) !== 2) {
+      console.error(`Function bad status code. StatusCode: ${p.StatusCode}, Payload: ${body}`);
+      throw new Error(body.toString());
+    } else if (body.hasError) {
+      console.error(`Server side handled error. Payload: ${body}`);
+      throw new Error(body.toString());
+    }
+
     try {
-      parts.push(BigInt(p));
+      switch (body.x) {
+        case 18: {
+          part0 = BigInt(body.res) * BigInt(12);
+          break;
+        }
+        case 57: {
+          part1 = BigInt(body.res) * BigInt(8);
+          break;
+        }
+        case 239: {
+          part2 = BigInt(body.res) * BigInt(5);
+          break;
+        }
+        default:
+          break;
+      }
     } catch (e) {
       console.error("Failed to convert piFinder result to BigInt.");
       throw e;
     }
   }
 
-  const part0 = parts[0] * BigInt(12);
-  const part1 = parts[1] * BigInt(8);
-  const part2 = parts[2] * BigInt(5);
+  if (!(part0 && part1 && part2)) {
+    console.error(`Failed to find all 3 parts.`);
+    throw new Error("Failed to find all 3 parts.");
+  }
 
   const pi = (BigInt(4) * (part0 + part1 - part2)).toString();
 
@@ -75,5 +112,3 @@ const piFinder = async (nCycles, nDigits) => {
 };
 
 module.exports = piFinder;
-
-// InvocationType: "Event", // <-- This is the key to being Async If you need the response use RequestResponse

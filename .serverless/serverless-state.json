@@ -261,7 +261,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/pifinder/dev/1616353228505-2021-03-21T19:00:28.505Z/pifinder.zip"
+                "S3Key": "serverless/pifinder/dev/1616371397177-2021-03-22T00:03:17.177Z/pifinder.zip"
               },
               "Handler": "s_calculate.handler",
               "Runtime": "nodejs12.x",
@@ -293,7 +293,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/pifinder/dev/1616353228505-2021-03-21T19:00:28.505Z/pifinder.zip"
+                "S3Key": "serverless/pifinder/dev/1616371397177-2021-03-22T00:03:17.177Z/pifinder.zip"
               },
               "Handler": "s_worker.handler",
               "Runtime": "nodejs12.x",
@@ -318,7 +318,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/pifinder/dev/1616353228505-2021-03-21T19:00:28.505Z/pifinder.zip"
+                "S3Key": "serverless/pifinder/dev/1616371397177-2021-03-22T00:03:17.177Z/pifinder.zip"
               },
               "Handler": "s_hellotest.handler",
               "Runtime": "nodejs12.x",
@@ -336,34 +336,34 @@
               "HellotestLogGroup"
             ]
           },
-          "CalculateLambdaVersionnYw7rzN40UfuQIJoFfFSVCHFWk2hOnGtf4qvrDeVk": {
+          "CalculateLambdaVersionz3lHKFuntfyN7Gs48vyVWaSVnegSeqAIqtXYhyecrA": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CalculateLambdaFunction"
               },
-              "CodeSha256": "+oKEXTNA73xClR7klCV/tJk4TtW+bQ6Chust+EYrPwk="
+              "CodeSha256": "vMAKSl3v05OGiy86PbXeo2mjyklCOZ3q9AwmlimHXGI="
             }
           },
-          "WorkerLambdaVersion4iprMJbDleOfyBAF7gWFT9H13rZipePMpFEMoQPg": {
+          "WorkerLambdaVersionh6pXva8WPEsmFfWc79KyTuEP4Djcp95VACIJmkz3DUw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "WorkerLambdaFunction"
               },
-              "CodeSha256": "+oKEXTNA73xClR7klCV/tJk4TtW+bQ6Chust+EYrPwk="
+              "CodeSha256": "vMAKSl3v05OGiy86PbXeo2mjyklCOZ3q9AwmlimHXGI="
             }
           },
-          "HellotestLambdaVersionUvVKLoyL8lb5AcqxjPAz3RJvcyACRaYfsUR5LDPWxk": {
+          "HellotestLambdaVersionFUblmUQ2SkXU8kn51Si0cHhlCxabqCHQTtiPjuiI": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "HellotestLambdaFunction"
               },
-              "CodeSha256": "+oKEXTNA73xClR7klCV/tJk4TtW+bQ6Chust+EYrPwk="
+              "CodeSha256": "vMAKSl3v05OGiy86PbXeo2mjyklCOZ3q9AwmlimHXGI="
             }
           },
           "HttpApi": {
@@ -597,13 +597,13 @@
               "TimeoutInMillis": 6500
             }
           },
-          "HttpApiRouteGetHellotest": {
+          "HttpApiRouteGetHello": {
             "Type": "AWS::ApiGatewayV2::Route",
             "Properties": {
               "ApiId": {
                 "Ref": "HttpApi"
               },
-              "RouteKey": "GET /hellotest",
+              "RouteKey": "GET /hello",
               "Target": {
                 "Fn::Join": [
                   "/",
@@ -676,19 +676,19 @@
           "CalculateLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CalculateLambdaVersionnYw7rzN40UfuQIJoFfFSVCHFWk2hOnGtf4qvrDeVk"
+              "Ref": "CalculateLambdaVersionz3lHKFuntfyN7Gs48vyVWaSVnegSeqAIqtXYhyecrA"
             }
           },
           "WorkerLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "WorkerLambdaVersion4iprMJbDleOfyBAF7gWFT9H13rZipePMpFEMoQPg"
+              "Ref": "WorkerLambdaVersionh6pXva8WPEsmFfWc79KyTuEP4Djcp95VACIJmkz3DUw"
             }
           },
           "HellotestLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "HellotestLambdaVersionUvVKLoyL8lb5AcqxjPAz3RJvcyACRaYfsUR5LDPWxk"
+              "Ref": "HellotestLambdaVersionFUblmUQ2SkXU8kn51Si0cHhlCxabqCHQTtiPjuiI"
             }
           },
           "HttpApiId": {
@@ -838,7 +838,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "CalculateLambdaVersionnYw7rzN40UfuQIJoFfFSVCHFWk2hOnGtf4qvrDeVk"
+        "versionLogicalId": "CalculateLambdaVersionz3lHKFuntfyN7Gs48vyVWaSVnegSeqAIqtXYhyecrA"
       },
       "worker": {
         "handler": "s_worker.handler",
@@ -858,18 +858,18 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "WorkerLambdaVersion4iprMJbDleOfyBAF7gWFT9H13rZipePMpFEMoQPg"
+        "versionLogicalId": "WorkerLambdaVersionh6pXva8WPEsmFfWc79KyTuEP4Djcp95VACIJmkz3DUw"
       },
       "hellotest": {
         "handler": "s_hellotest.handler",
         "events": [
           {
             "httpApi": {
-              "path": "/hellotest",
+              "path": "/hello",
               "method": "get"
             },
             "resolvedMethod": "GET",
-            "resolvedPath": "/hellotest"
+            "resolvedPath": "/hello"
           }
         ],
         "name": "pifinder-dev-hellotest",
@@ -878,7 +878,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "HellotestLambdaVersionUvVKLoyL8lb5AcqxjPAz3RJvcyACRaYfsUR5LDPWxk"
+        "versionLogicalId": "HellotestLambdaVersionFUblmUQ2SkXU8kn51Si0cHhlCxabqCHQTtiPjuiI"
       }
     },
     "configValidationMode": "warn",
@@ -910,7 +910,7 @@
     "artifact": "/Users/tonyrosler/Desktop/dev/evervault/pifinder/.serverless/pifinder.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/pifinder/dev/1616353228505-2021-03-21T19:00:28.505Z",
+    "artifactDirectoryName": "serverless/pifinder/dev/1616371397177-2021-03-22T00:03:17.177Z",
     "artifact": "pifinder.zip"
   }
 }
