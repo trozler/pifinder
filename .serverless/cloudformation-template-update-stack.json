@@ -83,12 +83,6 @@
         "LogGroupName": "/aws/lambda/pifinder-dev-worker"
       }
     },
-    "HellotestLogGroup": {
-      "Type": "AWS::Logs::LogGroup",
-      "Properties": {
-        "LogGroupName": "/aws/lambda/pifinder-dev-hellotest"
-      }
-    },
     "IamRoleLambdaExecution": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -216,12 +210,6 @@
                         "WorkerLogGroup",
                         "Arn"
                       ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "HellotestLogGroup",
-                        "Arn"
-                      ]
                     }
                   ]
                 }
@@ -238,7 +226,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/pifinder/dev/1616371397177-2021-03-22T00:03:17.177Z/pifinder.zip"
+          "S3Key": "serverless/pifinder/dev/1616459059791-2021-03-23T00:24:19.791Z/pifinder.zip"
         },
         "Handler": "s_calculate.handler",
         "Runtime": "nodejs12.x",
@@ -270,7 +258,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/pifinder/dev/1616371397177-2021-03-22T00:03:17.177Z/pifinder.zip"
+          "S3Key": "serverless/pifinder/dev/1616459059791-2021-03-23T00:24:19.791Z/pifinder.zip"
         },
         "Handler": "s_worker.handler",
         "Runtime": "nodejs12.x",
@@ -288,59 +276,24 @@
         "WorkerLogGroup"
       ]
     },
-    "HellotestLambdaFunction": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Ref": "ServerlessDeploymentBucket"
-          },
-          "S3Key": "serverless/pifinder/dev/1616371397177-2021-03-22T00:03:17.177Z/pifinder.zip"
-        },
-        "Handler": "s_hellotest.handler",
-        "Runtime": "nodejs12.x",
-        "FunctionName": "pifinder-dev-hellotest",
-        "MemorySize": 1024,
-        "Timeout": 6,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        }
-      },
-      "DependsOn": [
-        "HellotestLogGroup"
-      ]
-    },
-    "CalculateLambdaVersionz3lHKFuntfyN7Gs48vyVWaSVnegSeqAIqtXYhyecrA": {
+    "CalculateLambdaVersiongS8TX6w7q8dY4TD1oPzsvWSOrJGxgRYcux8AydKnyw": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CalculateLambdaFunction"
         },
-        "CodeSha256": "vMAKSl3v05OGiy86PbXeo2mjyklCOZ3q9AwmlimHXGI="
+        "CodeSha256": "CvIlflrA3VJWBg0bVXj0/Wyvq79qnblmRYwRr/IZ68I="
       }
     },
-    "WorkerLambdaVersionh6pXva8WPEsmFfWc79KyTuEP4Djcp95VACIJmkz3DUw": {
+    "WorkerLambdaVersionPtitxYwP3dpaDd5NCheXjdyqAEyB1pGryD7TttPmvg": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "WorkerLambdaFunction"
         },
-        "CodeSha256": "vMAKSl3v05OGiy86PbXeo2mjyklCOZ3q9AwmlimHXGI="
-      }
-    },
-    "HellotestLambdaVersionFUblmUQ2SkXU8kn51Si0cHhlCxabqCHQTtiPjuiI": {
-      "Type": "AWS::Lambda::Version",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "HellotestLambdaFunction"
-        },
-        "CodeSha256": "vMAKSl3v05OGiy86PbXeo2mjyklCOZ3q9AwmlimHXGI="
+        "CodeSha256": "CvIlflrA3VJWBg0bVXj0/Wyvq79qnblmRYwRr/IZ68I="
       }
     },
     "HttpApi": {
@@ -529,81 +482,6 @@
       },
       "DependsOn": "HttpApiIntegrationWorker"
     },
-    "HellotestLambdaPermissionHttpApi": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "HellotestLambdaFunction",
-            "Arn"
-          ]
-        },
-        "Action": "lambda:InvokeFunction",
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:",
-              {
-                "Ref": "AWS::Partition"
-              },
-              ":execute-api:",
-              {
-                "Ref": "AWS::Region"
-              },
-              ":",
-              {
-                "Ref": "AWS::AccountId"
-              },
-              ":",
-              {
-                "Ref": "HttpApi"
-              },
-              "/*"
-            ]
-          ]
-        }
-      }
-    },
-    "HttpApiIntegrationHellotest": {
-      "Type": "AWS::ApiGatewayV2::Integration",
-      "Properties": {
-        "ApiId": {
-          "Ref": "HttpApi"
-        },
-        "IntegrationType": "AWS_PROXY",
-        "IntegrationUri": {
-          "Fn::GetAtt": [
-            "HellotestLambdaFunction",
-            "Arn"
-          ]
-        },
-        "PayloadFormatVersion": "2.0",
-        "TimeoutInMillis": 6500
-      }
-    },
-    "HttpApiRouteGetHello": {
-      "Type": "AWS::ApiGatewayV2::Route",
-      "Properties": {
-        "ApiId": {
-          "Ref": "HttpApi"
-        },
-        "RouteKey": "GET /hello",
-        "Target": {
-          "Fn::Join": [
-            "/",
-            [
-              "integrations",
-              {
-                "Ref": "HttpApiIntegrationHellotest"
-              }
-            ]
-          ]
-        }
-      },
-      "DependsOn": "HttpApiIntegrationHellotest"
-    },
     "CloudWatchLogsSubscriptionFilterCalculateLogGroup": {
       "Type": "AWS::Logs::SubscriptionFilter",
       "Properties": {
@@ -621,16 +499,6 @@
         "FilterPattern": "?\"REPORT RequestId: \" ?\"SERVERLESS_ENTERPRISE\"",
         "LogGroupName": {
           "Ref": "WorkerLogGroup"
-        }
-      }
-    },
-    "CloudWatchLogsSubscriptionFilterHellotestLogGroup": {
-      "Type": "AWS::Logs::SubscriptionFilter",
-      "Properties": {
-        "DestinationArn": "arn:aws:logs:eu-central-1:802587217904:destination:b9ebb25c-6bfc-4684-9d6c-0d7f2358f62d#hJDN4hCtbVY5vLwx7c#pifinder#dev",
-        "FilterPattern": "?\"REPORT RequestId: \" ?\"SERVERLESS_ENTERPRISE\"",
-        "LogGroupName": {
-          "Ref": "HellotestLogGroup"
         }
       }
     },
@@ -662,19 +530,13 @@
     "CalculateLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CalculateLambdaVersionz3lHKFuntfyN7Gs48vyVWaSVnegSeqAIqtXYhyecrA"
+        "Ref": "CalculateLambdaVersiongS8TX6w7q8dY4TD1oPzsvWSOrJGxgRYcux8AydKnyw"
       }
     },
     "WorkerLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "WorkerLambdaVersionh6pXva8WPEsmFfWc79KyTuEP4Djcp95VACIJmkz3DUw"
-      }
-    },
-    "HellotestLambdaFunctionQualifiedArn": {
-      "Description": "Current Lambda function version",
-      "Value": {
-        "Ref": "HellotestLambdaVersionFUblmUQ2SkXU8kn51Si0cHhlCxabqCHQTtiPjuiI"
+        "Ref": "WorkerLambdaVersionPtitxYwP3dpaDd5NCheXjdyqAEyB1pGryD7TttPmvg"
       }
     },
     "HttpApiId": {

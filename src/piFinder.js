@@ -51,9 +51,8 @@ const piFinder = async (nCycles, nDigits) => {
   let part2;
 
   for (const p of res) {
-    console.log(":::::typeof p.Payload:", typeof p.Payload);
     const body = JSON.parse(p.Payload.toString());
-    console.log(":::::body worker function:", body);
+    console.log(":::::result body of worker lambda:", body);
 
     if (body === null) {
       console.error("body is null. body:", body);
@@ -64,23 +63,23 @@ const piFinder = async (nCycles, nDigits) => {
     } else if (Math.floor(p.StatusCode / 100) !== 2) {
       console.error(`Function bad status code. StatusCode: ${p.StatusCode}, Payload: ${body}`);
       throw new Error(body.toString());
-    } else if (body.hasError) {
-      console.error(`Server side handled error. Payload: ${body}`);
-      throw new Error(body.toString());
     }
 
     try {
-      switch (body.x) {
+      // console.log(":::::body =", body);
+      // console.log(":::::body['x'] =", body["x"]);
+      // console.log(":::::body['res'] =", body["res"]);
+      switch (body["x"]) {
         case 18: {
-          part0 = BigInt(body.res) * BigInt(12);
+          part0 = BigInt(body["res"]) * BigInt(12);
           break;
         }
         case 57: {
-          part1 = BigInt(body.res) * BigInt(8);
+          part1 = BigInt(body["res"]) * BigInt(8);
           break;
         }
         case 239: {
-          part2 = BigInt(body.res) * BigInt(5);
+          part2 = BigInt(body["res"]) * BigInt(5);
           break;
         }
         default:
@@ -92,21 +91,22 @@ const piFinder = async (nCycles, nDigits) => {
     }
   }
 
-  if (!(part0 && part1 && part2)) {
+  if (part0 === undefined || part1 === undefined || part2 === undefined) {
     console.error(`Failed to find all 3 parts.`);
+    console.error(`part0: ${part0}, part1: ${part1}, part2: ${part2}`);
     throw new Error("Failed to find all 3 parts.");
   }
 
   const pi = (BigInt(4) * (part0 + part1 - part2)).toString();
 
-  console.log(":::::n digits:", pi.length - 1);
-  console.log(":::::pi raw:", pi);
+  // console.log(":::::n digits:", pi.length - 1);
+  // console.log(":::::pi raw:", pi);
 
-  // Insert dot just before indexDot.
+  // Insert dot at correct point.
   const indexDot = pi.length - nDigits;
   const piDisplay = `${pi.slice(0, indexDot)}.${pi.slice(indexDot)}`;
 
-  console.log(":::::pi:", piDisplay);
+  // console.log(":::::pi:", piDisplay);
 
   return piDisplay;
 };

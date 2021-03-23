@@ -33,6 +33,8 @@ app.post("/calculate", async (req, res) => {
     console.error(":::::piFinder error,", e);
     res.status(500).send("Unexpected server side error.");
   }
+
+  res.send(`pi approximated to ${nDigits} digits, using 3 workers each performing ${nCycles} cycles:\n${pi}`);
 });
 
 // @ts-ignore
