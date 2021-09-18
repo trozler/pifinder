@@ -118,9 +118,9 @@ sls remove
 
 ## Approach
 
-My original approach was to use the standard unit circle Monte Carlo method for the approximation. However this method converged very slowly - it took 1 million iterations to accuratly estimate pi to 4 decimal places. This implemntation was written in Golang and did make use of the nice inbuilt concurrency support.
+My original approach was to use the standard unit circle Monte Carlo method for the approximation. However this method converged very slowly - it took 1 million iterations to accuratly estimate pi to 4 decimal places. This implemntation was written in Go and did make use of the nice inbuilt concurrency support.
 
-I then went through somewhat of a deep dive and tried a bunch of differnet pi algroithms. The historical deep dive provided by Craig Wood found [here](https://www.craig-wood.com/nick/articles/pi-machin/) was so usefuel. My implemntation of the Euler `arcTan` approximation has to be credited to this guide.
+I then went through somewhat of a deep dive and tried a bunch of differnet pi algroithms. The historical deep dive provided by Craig Wood found [here](https://www.craig-wood.com/nick/articles/pi-machin/) was very usefuel. My implemntation of the Euler `arcTan` approximation has to be credited to this guide.
 
 I eventually decided on the Machin series, as it distributes itself so naturally over 3 worker nodes and converges very quickly.
 
